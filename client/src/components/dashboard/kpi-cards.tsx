@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Volume2,
-  Pulse,
-  WaveformIcon,
+  Waves,
+  Activity,
   ArrowDownToLine, 
   ArrowUpFromLine,
   Radar
@@ -70,7 +70,7 @@ export function KpiCards({ data, isLoading = false }: KpiCardsProps) {
           <div className="bg-secondary-50 rounded-md p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-secondary-500">Max Vibration Amplitude</span>
-              <Pulse className="h-4 w-4 text-primary-500" />
+              <Waves className="h-4 w-4 text-primary-500" />
             </div>
             <div className="mt-1">
               <span className="text-xl font-semibold text-secondary-800">
@@ -86,7 +86,7 @@ export function KpiCards({ data, isLoading = false }: KpiCardsProps) {
           <div className="bg-secondary-50 rounded-md p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-secondary-500">Dominant Frequency</span>
-              <WaveformIcon className="h-4 w-4 text-primary-500" />
+              <Activity className="h-4 w-4 text-primary-500" />
             </div>
             <div className="mt-1">
               <span className="text-xl font-semibold text-secondary-800">

@@ -32,7 +32,6 @@ export function Header({ toggleSidebar }: HeaderProps) {
         </Button>
         
         <div className="flex items-center space-x-2">
-          <Activity className="h-6 w-6 text-primary-600" />
           <Link href="/">
             <a className="text-xl font-semibold text-secondary-800">TPA Tool</a>
           </Link>

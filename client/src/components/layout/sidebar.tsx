@@ -11,7 +11,7 @@ import {
   Settings,
   SlidersHorizontal,
   UserCog,
-  WaveformIcon
+  Activity
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -78,7 +78,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
             />
             <NavItem 
               href="/transfer-functions" 
-              icon={<WaveformIcon className="mr-2 h-4 w-4" />}
+              icon={<Activity className="mr-2 h-4 w-4" />}
               label="Transfer Functions"
               active={location === "/transfer-functions"}
             />
