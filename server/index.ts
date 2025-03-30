@@ -1,6 +1,10 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import { spawn } from "child_process";
+import path from "path";
+import { Server } from "http";
 
 const app = express();
 app.use(express.json());
@@ -35,6 +39,44 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Start Python backend
+log("Starting Python backend process...");
+const pythonProcess = spawn("python", [path.join(process.cwd(), "python_backend/app.py")], {
+  stdio: ["pipe", "pipe", "pipe"],
+  env: { ...process.env, PYTHON_PORT: "5001" }
+});
+
+// Log Python process output
+pythonProcess.stdout.on("data", (data) => {
+  log(`[python] ${data.toString().trim()}`, "python");
+});
+
+pythonProcess.stderr.on("data", (data) => {
+  log(`[python-err] ${data.toString().trim()}`, "python");
+});
+
+pythonProcess.on("close", (code) => {
+  log(`Python backend process exited with code ${code}`, "python");
+});
+
+// Log proxy requests manually
+app.use("/api/python", (req, res, next) => {
+  log(`Proxying to Python backend: ${req.method} ${req.url}`, "express");
+  next();
+});
+
+// Setup proxy to Python backend
+app.use(
+  "/api/python",
+  createProxyMiddleware({
+    target: "http://localhost:5001",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api/python": "", // Remove /api/python prefix when forwarding
+    }
+  } as any)
+);
 
 (async () => {
   const server = await registerRoutes(app);

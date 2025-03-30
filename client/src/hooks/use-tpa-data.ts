@@ -6,9 +6,9 @@ import { queryClient } from "@/lib/queryClient";
 // Hook to get TPA data
 export const useTpaData = (params: TpaComputationParams) => {
   return useQuery({
-    queryKey: ["/api/compute-tpa", params],
+    queryKey: ["/api/python/compute-tpa", params],
     queryFn: async () => {
-      const res = await apiRequest("POST", "/api/compute-tpa", params);
+      const res = await apiRequest("POST", "/api/python/compute-tpa", params);
       return res.json() as Promise<TpaData>;
     },
     staleTime: 0, // Always refetch when parameters change
@@ -19,12 +19,12 @@ export const useTpaData = (params: TpaComputationParams) => {
 export const useComputeTpa = () => {
   return useMutation({
     mutationFn: async (params: TpaComputationParams) => {
-      const res = await apiRequest("POST", "/api/compute-tpa", params);
+      const res = await apiRequest("POST", "/api/python/compute-tpa", params);
       return res.json() as Promise<TpaData>;
     },
     onSuccess: (data, variables) => {
       // Update the cached data with the new results
-      queryClient.setQueryData(["/api/compute-tpa", variables], data);
+      queryClient.setQueryData(["/api/python/compute-tpa", variables], data);
     },
   });
 };
